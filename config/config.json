@@ -1,0 +1,6 @@
+{
+	"domain":"http://wiprodigital.com",
+	"output":"sitemap.xml",
+	"debug":true,
+	"images":true
+}
