@@ -15,7 +15,6 @@ class Crawler():
 	debug = False
 	output = None
 	output_file = None
-	marked = {}
 
 	ignore_exts = (".docx", ".doc", ".mp4", ".jpg", ".jpeg", ".png", ".gif" ,".pdf")
 	link_regex = re.compile(b'<a [^>]*href=[\'|"](.*?)[\'"][^>]*?>')
@@ -119,8 +118,8 @@ class Crawler():
 				# Image search in the current page.
 				images = self.image_regex.findall(msg)
 				for image_link in list(set(images)):
-					image_link = image_link.decode("utf-8", errors="ignore")
 
+					image_link = image_link.decode("utf-8", errors="ignore")
 					# Ignore link starting with data:
 					if image_link.startswith("data:"):
 						continue
@@ -133,11 +132,11 @@ class Crawler():
 						if not image_link.startswith("/"):
 							image_link = "/{0}".format(image_link)
 						image_link = "{0}{1}".format(self.domain.strip("/"), image_link.replace("./", "/"))
-
 					# Ignore other domain images
 					image_link_parsed = urlparse(image_link)
 					if image_link_parsed.netloc != self.target_domain:
 						continue
+					image_list = "{0}<image:image><image:loc>{1}</image:loc></image:image>".format(image_list, self.htmlspecialchars(image_link))
 
 			print ("<url><loc>"+self.htmlspecialchars(url.geturl())+"</loc>" + image_list + "</url>", file=self.output_file)
 			if self.output_file:
